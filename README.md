@@ -36,3 +36,6 @@ The arduino code is pretty strait forward. There is a set of commands to control
 The C# code is currently using a wrapper around the amazing [Open CV library](https://opencv.org/) for feature detection from the webcam feed. You can find this wrapper [Here](http://www.emgu.com/wiki/index.php/Main_Page). At the moment I am just hacking up the movement detection example to suite my needs, but eventually I will start my own, more organized, app.
 
 Eventually I would love for the app to have some personality, it would look for faces and follow them. When it see's people it 'likes' it would light up with a happy color and beep in delight. Something that just sits on the desk and looks adorable. Maybe it would unlock your computer for you, or do other more useful things. Some kind of google home type integration?!
+
+## Before you try to run the C# code!
+You will haven to be able to run .net 4 code, and you will also have to install the EMGU libs ( linked above ) or even better, use Nuget to pull down the latest EMGU.CV libs. **This is hacked together test code, jammed sideways into an example from EMGU. Don't expect to be wowed at this stage. It's about 45 minutes worth of work, most of that getting the example code to run.**
