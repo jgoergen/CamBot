@@ -1,7 +1,7 @@
 # CamBot!
 Arduino & C# Automated desktop webcam robot.
 
-This is a project to make a (somewhat) expressive, desk toy webcam that looks for, follows, and recognizes faces. It's based on Hackerbox kit #24 ( https://hackerboxes.com/collections/frontpage/products/hackerbox-0024-vision-quest ) with a few added parts where needed for additional functionality.
+This is a project to make a (somewhat) expressive, desk toy webcam that looks for, follows, and recognizes faces. It's based on [Hackerbox kit #24](https://hackerboxes.com/collections/frontpage/products/hackerbox-0024-vision-quest) with a few added parts where needed for additional functionality.
 
 ### Current developement progress:
 
@@ -19,6 +19,17 @@ This is a project to make a (somewhat) expressive, desk toy webcam that looks fo
 There are 2 sides to the software on this project.
 - The Arduino code that creates a Serial Interface to control the robot and other hardware.
 - The C# code to create a desktop app to read the webcam, look for interesting activity and control the robot ( via Arduino Serial Interface mentioned above. )
+
+The hardware consists of:
+1. An Arduino Nano V3 to control everything
+2. A single Neopixel RGB LED
+3. 2 MG996R Servos
+4. A Pan / Tilt Assembly
+5. A laptop webcam assembly + USB adapter
+6. A repurposed power adapter from an old cellphone
+7. 2 usb cables
+8. Scrap floor samples as a weighted base + cardboard for 'feet'
+9. A tiny breadboard + prototyping connectors to keep things open to experimentation.
 
 The arduino code is pretty strait forward. There is a set of commands to control every piece of hardware. I generally write the Serial interpretter to take commands in the form of <COMMAND:PARAMETER>, that way if we end up with multiple commands in the buffer at a time they can easily be broken apart and dealt with individually. I also like to write this code so that you can define where you want the state of things to be, and how fast you want to move towards those states. That way you can just send one command that says "Hey, I want the light to fade to green slowly" with a few commands and not have to actually send all of the rgb values to animate that yourself.
 
