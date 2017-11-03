@@ -25,15 +25,15 @@ namespace VideoSurveilance
     {
         // SETTINGS ////////////////////////////////////////////////
         private int SUBSTRACTION_HISTORY = 20; // the number of frames to use when normalizing out 'noise'
-        private int SUBTRACTION_THRESHOLD = 40; // the amount of pixel difference to ignore when comparing sets of frames
-        private int FRAME_BLUR_STRENGTH = 55; // this MUST be an odd number
+        private int SUBTRACTION_THRESHOLD = 30; // the amount of pixel difference to ignore when comparing sets of frames
+        private int FRAME_BLUR_STRENGTH = 101; // this MUST be an odd number
         private int LARGEST_DETECTION_HEIGHT_SIZE_DIVISOR = 2;
         private int LARGEST_DETECTION_WIDTH_SIZE_DIVISOR = 2;
         private int SMALLEST_DETECTION_HEIGHT_SIZE_DIVISOR = 4;
         private int SMALLEST_DETECTION_WIDTH_SIZE_DIVISOR = 5;
         private long MS_MOVE_WAIT = 500; // how long to wait before looking moving
         private long MS_PAUSE_DETECT_AFTER_MOVE = 500; // how long to wait after a move for the detection to 'settle'
-        private int MOVE_ADJUST = 15; // the lower this number the further the servos move towards percieved movement
+        private int MOVE_ADJUST = 10; // the lower this number the further the servos move towards percieved movement
         // END SETTINGS ////////////////////////////////////////////
 
         private static VideoCapture _cameraCapture;
@@ -114,6 +114,11 @@ namespace VideoSurveilance
             try
             {
                 _cameraCapture = new VideoCapture();
+
+                // I had to set this by hand to match our camera as opencv doesn't always pull these properties correctly and sometimes shows funky frames or nothing at all
+                _cameraCapture.SetCaptureProperty(CapProp.FrameWidth, 1600);
+                _cameraCapture.SetCaptureProperty(CapProp.FrameHeight, 1200);
+                _cameraCapture.SetCaptureProperty(CapProp.FourCC, Emgu.CV.VideoWriter.Fourcc('Y', 'U', 'Y', '2'));
             }
             catch (Exception e)
             {
@@ -130,7 +135,7 @@ namespace VideoSurveilance
         void ProcessFrame(object sender, EventArgs e)
         {
             // capture frame
-            Mat frame = _cameraCapture.QueryFrame();
+            Mat frame = _cameraCapture.QuerySmallFrame();
             Mat smoothedFrame = new Mat();
             CvInvoke.GaussianBlur(frame, smoothedFrame, new Size(FRAME_BLUR_STRENGTH, FRAME_BLUR_STRENGTH), 1); //filter out noises
 
@@ -143,7 +148,6 @@ namespace VideoSurveilance
             _blobDetector.Detect(forgroundMask.ToImage<Gray, byte>(), blobs);
             blobs.FilterByArea(100, int.MaxValue);
 
-            // scale 'blobs'
             float scale = (frame.Width + frame.Width) / 2.0f;
             _tracker.Update(blobs, 0.01 * scale, 5, 5);
 

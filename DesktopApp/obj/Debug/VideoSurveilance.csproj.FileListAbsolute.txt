@@ -1,6 +1,3 @@
-C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\VideoSurveilance.VideoSurveilance.resources
-C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\VideoSurveilance.csproj.GenerateResource.Cache
-C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\VideoSurveilance.csproj.CoreCompileInputs.cache
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\bin\release\x64\concrt140.dll
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\bin\release\x64\cvextern.dll
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\bin\release\x64\msvcp140.dll
@@ -33,6 +30,9 @@ C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\bin\release\sv\ZedGraph.resourc
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\bin\release\tr\ZedGraph.resources.dll
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\bin\release\zh-cn\ZedGraph.resources.dll
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\bin\release\zh-tw\ZedGraph.resources.dll
+C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\VideoSurveilance.VideoSurveilance.resources
+C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\VideoSurveilance.csproj.GenerateResource.Cache
+C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\VideoSurveilance.csproj.CoreCompileInputs.cache
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\Example.VideoSurveilance.exe
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\Example.VideoSurveilance.pdb
 C:\Users\danth\Dropbox\Arduino\CamBot\DesktopApp\obj\Debug\VideoSurveilance.csprojResolveAssemblyReference.cache

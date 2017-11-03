@@ -50,7 +50,7 @@ namespace VideoSurveilance
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -71,9 +71,10 @@ namespace VideoSurveilance
             // 
             this.imageBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBox1.Location = new System.Drawing.Point(0, 92);
-            this.imageBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.imageBox1.Margin = new System.Windows.Forms.Padding(6);
             this.imageBox1.Name = "imageBox1";
             this.imageBox1.Size = new System.Drawing.Size(1034, 812);
+            this.imageBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imageBox1.TabIndex = 2;
             this.imageBox1.TabStop = false;
             // 
@@ -82,7 +83,7 @@ namespace VideoSurveilance
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1034, 92);
             this.panel1.TabIndex = 0;
@@ -101,9 +102,10 @@ namespace VideoSurveilance
             // 
             this.imageBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imageBox2.Location = new System.Drawing.Point(0, 92);
-            this.imageBox2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.imageBox2.Margin = new System.Windows.Forms.Padding(6);
             this.imageBox2.Name = "imageBox2";
             this.imageBox2.Size = new System.Drawing.Size(1060, 812);
+            this.imageBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imageBox2.TabIndex = 2;
             this.imageBox2.TabStop = false;
             // 
@@ -112,7 +114,7 @@ namespace VideoSurveilance
             this.panel2.Controls.Add(this.label2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel2.Margin = new System.Windows.Forms.Padding(6);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1060, 92);
             this.panel2.TabIndex = 0;
@@ -133,7 +135,7 @@ namespace VideoSurveilance
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2102, 904);
             this.Controls.Add(this.splitContainer1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "VideoSurveilance";
             this.Text = "VideoSurveilance";
             this.splitContainer1.Panel1.ResumeLayout(false);
