@@ -9,9 +9,9 @@ This is a project to make a (somewhat) expressive, desk toy webcam that looks fo
 | ------------- |:-------------:
 | Done! | Initial build. |
 | Done! | Write Initial Arduino Serial interface API |
-| 50% | Write Initial C# desktop app to prove out tracking and Serial interfacing. |
-| 20% | Put together github for everything. |
-| 0% | Put together tutorial video on initial build, initial code, key learnings and demonstration. |
+| 100% | Write Initial C# desktop app to prove out tracking and Serial interfacing. |
+| 100% | Put together github for everything. |
+| 20% | Put together tutorial video on initial build, initial code, key learnings and demonstration. |
 | 0% | 2nd pass at Arduino code, clean things up, break them into seperate files, etc. |
 | 0% | 2nd pass at C# desktop app, clean things up, break them into seperate classes, etc. |
 | 0% | 3d print nicer cover for electronics and paint / finish stand. |
