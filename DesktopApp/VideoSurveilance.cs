@@ -23,11 +23,22 @@ namespace VideoSurveilance
 {
     public partial class VideoSurveilance : Form
     {
+        // SETTINGS ////////////////////////////////////////////////
+        private int SUBSTRACTION_HISTORY = 20; // the number of frames to use when normalizing out 'noise'
+        private int SUBTRACTION_THRESHOLD = 40; // the amount of pixel difference to ignore when comparing sets of frames
+        private int FRAME_BLUR_STRENGTH = 55; // this MUST be an odd number
+        private int LARGEST_DETECTION_HEIGHT_SIZE_DIVISOR = 2;
+        private int LARGEST_DETECTION_WIDTH_SIZE_DIVISOR = 2;
+        private int SMALLEST_DETECTION_HEIGHT_SIZE_DIVISOR = 4;
+        private int SMALLEST_DETECTION_WIDTH_SIZE_DIVISOR = 5;
+        private long MS_MOVE_WAIT = 500; // how long to wait before looking moving
+        private long MS_PAUSE_DETECT_AFTER_MOVE = 500; // how long to wait after a move for the detection to 'settle'
+        private int MOVE_ADJUST = 15; // the lower this number the further the servos move towards percieved movement
+        // END SETTINGS ////////////////////////////////////////////
 
         private static VideoCapture _cameraCapture;
         private Stopwatch sw = Stopwatch.StartNew();
-        long millisecondsWaitBeforeMove = 200;
-        long lastTimeMoved = 0;
+        private long lastTimeMoved = 0;
         private static BackgroundSubtractor _fgDetector;
         private static Emgu.CV.Cvb.CvBlobDetector _blobDetector;
         private static Emgu.CV.Cvb.CvTracks _tracker;
@@ -35,14 +46,7 @@ namespace VideoSurveilance
         private double centerX = 0;
         private double centerY = 0;
         private bool moving = false;
-
-        /// <summary>
-        /// Holds data received until we get a terminator.
-        /// </summary>
         private string tString = string.Empty;
-        /// <summary>
-        /// End of transmition byte in this case EOT (ASCII 4).
-        /// </summary>
         private byte _terminator = 0x4;
 
         public VideoSurveilance()
@@ -107,7 +111,6 @@ namespace VideoSurveilance
 
         void Run()
         {
-
             try
             {
                 _cameraCapture = new VideoCapture();
@@ -118,29 +121,29 @@ namespace VideoSurveilance
                 return;
             }
 
-            _fgDetector = new Emgu.CV.VideoSurveillance.BackgroundSubtractorMOG2();
+            _fgDetector = new Emgu.CV.VideoSurveillance.BackgroundSubtractorMOG2(SUBSTRACTION_HISTORY, SUBTRACTION_THRESHOLD);
             _blobDetector = new CvBlobDetector();
             _tracker = new CvTracks();
-
             Application.Idle += ProcessFrame;
         }
 
         void ProcessFrame(object sender, EventArgs e)
         {
+            // capture frame
             Mat frame = _cameraCapture.QueryFrame();
             Mat smoothedFrame = new Mat();
-            CvInvoke.GaussianBlur(frame, smoothedFrame, new Size(31, 31), 1); //filter out noises
-                                                                              //frame._SmoothGaussian(3);
+            CvInvoke.GaussianBlur(frame, smoothedFrame, new Size(FRAME_BLUR_STRENGTH, FRAME_BLUR_STRENGTH), 1); //filter out noises
 
-            #region use the BG/FG detector to find the forground mask
+            // get mask for preview
             Mat forgroundMask = new Mat();
             _fgDetector.Apply(smoothedFrame, forgroundMask);
-            #endregion
 
+            // get detection 'blobs' or regions
             CvBlobs blobs = new CvBlobs();
             _blobDetector.Detect(forgroundMask.ToImage<Gray, byte>(), blobs);
             blobs.FilterByArea(100, int.MaxValue);
 
+            // scale 'blobs'
             float scale = (frame.Width + frame.Width) / 2.0f;
             _tracker.Update(blobs, 0.01 * scale, 5, 5);
 
@@ -149,46 +152,53 @@ namespace VideoSurveilance
 
             foreach (var pair in _tracker)
             {
-
                 CvTrack b = pair.Value;
 
-                if (b.BoundingBox.Width < (frame.Width / 10) || b.BoundingBox.Height < (frame.Height / 10) || (b.BoundingBox.Width > (frame.Width / 2) && b.BoundingBox.Height > (frame.Height / 2)))
+                // limit the largest and smallest size boxes we care about.
+                if (b.BoundingBox.Width < (frame.Width / SMALLEST_DETECTION_WIDTH_SIZE_DIVISOR) ||
+                    b.BoundingBox.Height < (frame.Height / SMALLEST_DETECTION_HEIGHT_SIZE_DIVISOR) ||
+                    (b.BoundingBox.Width > (frame.Width / LARGEST_DETECTION_WIDTH_SIZE_DIVISOR) &&
+                    b.BoundingBox.Height > (frame.Height / LARGEST_DETECTION_HEIGHT_SIZE_DIVISOR)))
                     continue;
 
+                // keep track of the largest regions as we only care to track the largest
                 if (b.BoundingBox.Width > largestW)
                 {
-
                     largestW = b.BoundingBox.Width;
                     largestH = b.BoundingBox.Height;
-
                     centerX = b.Centroid.X;
                     centerY = b.Centroid.Y;
-                    CvInvoke.Rectangle(frame, b.BoundingBox, new MCvScalar(255.0, 255.0, 255.0), 10);
+                    CvInvoke.Rectangle(frame, b.BoundingBox, new MCvScalar(255.0, 255.0, 255.0), 20);
                     CvInvoke.PutText(frame, b.Id.ToString(), new Point((int)Math.Round(b.Centroid.X), (int)Math.Round(b.Centroid.Y)), FontFace.HersheyPlain, 1.0, new MCvScalar(255.0, 255.0, 255.0));
-
                 }
                 else
                 {
-                    //CvInvoke.Rectangle(frame, b.BoundingBox, new MCvScalar(255.0, 255.0, 255.0), 2);
-                    //CvInvoke.PutText(frame, b.Id.ToString(), new Point((int)Math.Round(b.Centroid.X), (int)Math.Round(b.Centroid.Y)), FontFace.HersheyPlain, 1.0, new MCvScalar(255.0, 255.0, 255.0));
-
+                    CvInvoke.Rectangle(frame, b.BoundingBox, new MCvScalar(255.0, 255.0, 255.0), 1);
+                    CvInvoke.PutText(frame, b.Id.ToString(), new Point((int)Math.Round(b.Centroid.X), (int)Math.Round(b.Centroid.Y)), FontFace.HersheyPlain, 1.0, new MCvScalar(255.0, 255.0, 255.0));
                 }
             }
+
+            // display frames onscreen
             imageBox1.Image = frame;
             imageBox2.Image = forgroundMask;
 
-            if (sw.ElapsedMilliseconds > lastTimeMoved + millisecondsWaitBeforeMove)
+            // if enough time has elapsed, deal with potential movement
+            if (sw.ElapsedMilliseconds > lastTimeMoved + MS_MOVE_WAIT)
             {
                 Debug.WriteLine(frame.Width + " " + frame.Height + " " + centerX + " " + centerY);
                 lastTimeMoved = sw.ElapsedMilliseconds;
 
+                // did we just move? if so, skip movement this time around.
                 if (moving)
                 {
                     moving = false;
+                    // reset wait time before next move
+                    MS_MOVE_WAIT -= MS_PAUSE_DETECT_AFTER_MOVE;
                     centerX = 0;
                     centerY = 0;
                 }
 
+                // if there is no movement, fade back to 0,0,0
                 if (centerX == 0 && centerY == 0)
                 {
                     _serialPort.WriteLine("<setr:0>");
@@ -201,40 +211,46 @@ namespace VideoSurveilance
                     _serialPort.WriteLine("<setg:255>");
                 }
 
-                if ((frame.Width / 2) < centerX)
-                {
-                    Debug.WriteLine("Move left 2");
-                    _serialPort.WriteLine("<panleft:4>");
-                    _serialPort.WriteLine("");
-                    moving = true;
+                var xDist = (((frame.Width / 2) - centerX) / MOVE_ADJUST);
+                var yDist = (((frame.Height / 2) - centerY) / MOVE_ADJUST) * -1;
 
-                }
-                else if ((frame.Width / 2) > centerX)
+                if (xDist < 0)
                 {
-                    Debug.WriteLine("Move right 2");
-                    _serialPort.WriteLine("<panright:4>");
+                    Debug.WriteLine("Move left " + Math.Abs(xDist));
+                    _serialPort.WriteLine("<panleft:" + Math.Abs(xDist) + ">");
                     _serialPort.WriteLine("");
                     moving = true;
                 }
-
-                if ((frame.Height / 2) > centerY)
+                else if (xDist > 0)
                 {
-                    Debug.WriteLine("Move up 2");
-                    _serialPort.WriteLine("<tiltup:4>");
-                    _serialPort.WriteLine("");
-                    moving = true;
-
-                }
-                else if ((frame.Height / 2) < centerY)
-                {
-                    Debug.WriteLine("Move down 2");
-                    _serialPort.WriteLine("<tiltdown:4>");
+                    Debug.WriteLine("Move right " + xDist);
+                    _serialPort.WriteLine("<panright:" + xDist + ">");
                     _serialPort.WriteLine("");
                     moving = true;
                 }
 
+                if (yDist < 0)
+                {
+                    Debug.WriteLine("Move up " + Math.Abs(yDist));
+                    _serialPort.WriteLine("<tiltup:" + Math.Abs(yDist)  + ">");
+                    _serialPort.WriteLine("");
+                    moving = true;
+                }
+                else if (yDist > 0)
+                {
+                    Debug.WriteLine("Move down " + yDist);
+                    _serialPort.WriteLine("<tiltdown:" + yDist  + ">");
+                    _serialPort.WriteLine("");
+                    moving = true;
+                }
+
+                // clear out values now that we've moved.
                 centerX = 0;
                 centerY = 0;
+
+                // if we did actually move add alittle extra time onto the wait before movin again
+                if (moving)
+                    MS_MOVE_WAIT += MS_PAUSE_DETECT_AFTER_MOVE;
             }
         }
     }
