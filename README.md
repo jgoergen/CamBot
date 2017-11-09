@@ -3,6 +3,8 @@ Arduino & C# Automated desktop webcam robot.
 
 This is a project to make a (somewhat) expressive, desk toy webcam that looks for, follows, and recognizes faces. It's based on [Hackerbox kit #24](https://hackerboxes.com/collections/frontpage/products/hackerbox-0024-vision-quest) with a few added parts where needed for additional functionality.
 
+[![Cambot Video](https://img.youtube.com/vi/nbJNLVBo_g4/0.jpg)](https://www.youtube.com/watch?v=nbJNLVBo_g4)
+
 ### Current developement progress:
 
 | Progress        | Description           
@@ -11,7 +13,7 @@ This is a project to make a (somewhat) expressive, desk toy webcam that looks fo
 | Done! | Write Initial Arduino Serial interface API |
 | Done! | Write Initial C# desktop app to prove out tracking and Serial interfacing. |
 | Done! | Put together github for everything. |
-| 20% | Put together tutorial video on initial build, initial code, key learnings and demonstration. |
+| 100% | Put together tutorial video on initial build, initial code, key learnings and demonstration. |
 | 0% | 2nd pass at Arduino code, clean things up, break them into seperate files, etc. |
 | 0% | 2nd pass at C# desktop app, clean things up, break them into seperate classes, etc. |
 | 0% | 3d print nicer cover for electronics and paint / finish stand. |
