@@ -42,3 +42,17 @@ I would love for the CamBot to have some personality, it would look for faces an
 
 ## Before you try to run the C# code!
 You will have to be able to run .net 4 code, and you will also have to install the EMGU libs ( linked above ) or even better, use Nuget to pull down the latest EMGU.CV libs. **Warning. This is hacked together code at the moment, jammed sideways into an example from EMGU.**
+
+## Some things to consider ##
+
+Movement detection is VERY sensitive to alot of things. Take care to minimize the amount of noise is in your video feed ( so for example dark rooms will be a problem if your camera doesn't use infrared. Also cheap cameras have alot of noise in general. ) Also, your robot will need to be seated on a totally still surface. ANY unplanned movement will totally 'unsettle' your motion detection ( it will think EVERYTHING is moving until it settles again, if it ever does. ) 
+
+If you go into the Desktop app C# code ( VideoSurveilance.cs ) you will see some settings towards the top of the file that you can play with to fine tune things alittle. I will add more / better comments for this, but I'll describe a few that might be usefull to combat false positives and bad motion detection in general.
+
+MS_PAUSE_DETECT_AFTER_MOVE is the number of milliseconds the desktop software will wait before it moves towards ( what it thinks to be ) movement. The significance of this is the more frames of video the library ( Open CV ) 'stacks' for detecting movement the more the stationary objects will 'settle' out of the image. ( This is why the image will slowly go mostly black over time. Open CV is trying to remove things that are the same between frames leaving only the moving stuff. ) So if you turn this up, it will help remove stationary objects, but it will make your camera less responsive ( as it has to wait before it can move again. )
+
+SUBSTRACTION_HISTORY works in tandem with the above setting. If you give the library more time to settle, you have to increase the number of frames it has in it's buffer to 'stack'. So if you increase MS_PAUSE_DETECT_AFTER_MOVE you should turn this up as well. 
+
+SUBTRACTION_THRESHOLD is something you will just have to play with, but the idea is the higher this number the less the library will assume a difference between frames is actually movement. Turning this up would probably help remove some webcam noise but if it's too high it will make the motion detection alot less usefull.
+
+FRAME_BLUR_STRENGTH would help with webcam noise alot like SUBTRACTION_THRESHOLD. ( the higher the number, the more it smooths or blurs frames. ) Just be careful, this MUST be an odd number and the higher it gets, the less accurate the motion detection will be.
