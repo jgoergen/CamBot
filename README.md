@@ -45,9 +45,9 @@ You will have to be able to run .net 4 code, and you will also have to install t
 
 ## Some things to consider ##
 
-Movement detection is VERY sensitive to alot of things. Take care to minimize the amount of noise is in your video feed ( so for example dark rooms will be a problem if your camera doesn't use infrared. Also cheap cameras have alot of noise in general. ) Also, your robot will need to be seated on a totally still surface. ANY unplanned movement will totally 'unsettle' your motion detection ( it will think EVERYTHING is moving until it settles again, if it ever does. ) 
+Movement detection is VERY sensitive to alot of things. Take care to minimize the amount of noise in your video feed. For example; dark rooms will be a problem if your camera doesn't use infrared. Also cheap cameras have alot of noise in general. Your robot will need to be seated on a totally still surface. ANY unplanned movement will totally 'unsettle' your motion detection ( it will think EVERYTHING is moving until it has time to settle again. ) 
 
-If you go into the Desktop app C# code ( VideoSurveilance.cs ) you will see some settings towards the top of the file that you can play with to fine tune things alittle. I will add more / better comments for this, but I'll describe a few that might be usefull to combat false positives and bad motion detection in general.
+If you go into the Desktop app C# code ( VideoSurveilance.cs ) you will see some settings towards the top of the file that you can play with to fine tune things alittle. I will add more comments for this, but in the meantime I'll describe a few that might be usefull to combat false positives and bad motion detection in general.
 
 MS_PAUSE_DETECT_AFTER_MOVE is the number of milliseconds the desktop software will wait before it moves towards ( what it thinks to be ) movement. The significance of this is the more frames of video the library ( Open CV ) 'stacks' for detecting movement the more the stationary objects will 'settle' out of the image. ( This is why the image will slowly go mostly black over time. Open CV is trying to remove things that are the same between frames leaving only the moving stuff. ) So if you turn this up, it will help remove stationary objects, but it will make your camera less responsive ( as it has to wait before it can move again. )
 
