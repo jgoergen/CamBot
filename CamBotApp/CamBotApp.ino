@@ -21,8 +21,10 @@ const byte COMMAND_LENGTH = 32;
 char receivedChars[COMMAND_LENGTH];
 boolean newData = false;
 char receivedNewData[COMMAND_LENGTH];
-int panAmount = 50;
-int tiltAmount = 30;
+int panAmount = 20;
+int tiltAmount = 20;
+int actualPanAmount = 40;
+int actualTiltAmount = 40;
 float r = 0.0f;
 float g = 0.0f;
 float b = 0.0f;
@@ -30,7 +32,7 @@ float newR = 255.0f;
 float newG = 255.0f;
 float newB = 255.0f;
 float changeSpeed = 1.0f;
-
+int servoStepWait = 20;
 
 void setup()
 {
@@ -58,8 +60,33 @@ void loop()
     processCommand(command, param);
   }
 
+  updateServos();
   updateLED();
-  delay(100);
+}
+
+void updateServos() {
+
+  if (panAmount != actualPanAmount) {
+
+    if (panAmount > actualPanAmount)
+      actualPanAmount ++;
+    else
+      actualPanAmount --;
+      
+    servoPan.write(actualPanAmount);
+  }
+
+  if (tiltAmount != actualTiltAmount) {
+
+    if (tiltAmount > actualTiltAmount)
+      actualTiltAmount ++;
+    else
+      actualTiltAmount --;
+      
+    servoTilt.write(actualTiltAmount);
+  }
+
+  delay(servoStepWait);
 }
 
 void updateLED() {
@@ -91,14 +118,14 @@ void processCommand(char* command, char* param) {
   if (strcmp(command, "panset") == 0) {
 
     Serial.print("Pan Set: ");
-    panAmount = atoi(param);
+    panAmount = actualPanAmount = atoi(param);
     servoPan.write(panAmount);
     Serial.println(panAmount);
     
   } else if (strcmp(command, "tiltset") == 0) {
     
     Serial.print("Tilt Set: ");
-    tiltAmount = atoi(param);
+    tiltAmount = actualTiltAmount = atoi(param);
     servoTilt.write(tiltAmount);
     Serial.println(tiltAmount);
     
@@ -110,7 +137,6 @@ void processCommand(char* command, char* param) {
     if (panAmount < PAN_LOWER_BOUNDS)
       panAmount = PAN_LOWER_BOUNDS;
     
-    servoPan.write(panAmount);
     Serial.println(panAmount);
     
   } else if (strcmp(command, "panright") == 0) {
@@ -121,7 +147,6 @@ void processCommand(char* command, char* param) {
     if (panAmount > PAN_UPPER_BOUNDS)
       panAmount = PAN_UPPER_BOUNDS;
     
-    servoPan.write(panAmount);
     Serial.println(panAmount);
     
   } else if (strcmp(command, "tiltup") == 0) {
@@ -132,7 +157,6 @@ void processCommand(char* command, char* param) {
     if (tiltAmount < TILT_LOWER_BOUNDS)
       tiltAmount = TILT_LOWER_BOUNDS;
     
-    servoTilt.write(tiltAmount);
     Serial.println(tiltAmount);
     
   } else if (strcmp(command, "tiltdown") == 0) {
@@ -143,7 +167,6 @@ void processCommand(char* command, char* param) {
     if (tiltAmount > TILT_UPPER_BOUNDS)
       tiltAmount = TILT_UPPER_BOUNDS;
     
-    servoTilt.write(tiltAmount);
     Serial.println(tiltAmount);
     
   } else if (strcmp(command, "setr") == 0) {
@@ -197,6 +220,18 @@ void processCommand(char* command, char* param) {
       changeSpeed = 0;
     
     Serial.println(changeSpeed);
+  } else if (strcmp(command, "setservospeed") == 0) {
+
+    Serial.print("Set Servo Move Speed: ");
+    servoStepWait = atoi(param);
+
+    if (servoStepWait > 500)
+      servoStepWait = 5000;
+
+    if (servoStepWait < 1)
+      servoStepWait = 1;
+    
+    Serial.println(servoStepWait);
   }
 }
 
