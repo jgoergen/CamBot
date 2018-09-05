@@ -1,7 +1,7 @@
 # CamBot!
 Arduino & C# Automated desktop webcam robot.
 
-This is a project to make a (somewhat) expressive, desk toy webcam that looks for and attempts to follow movement. It's based on [Hackerbox kit #24](https://hackerboxes.com/collections/frontpage/products/hackerbox-0024-vision-quest) with a few added parts where needed for additional functionality.
+This is a project to make a (somewhat) expressive, desk toy webcam that looks for and attempts to follow movement ( and maybe more, eventually. ) It's based on [Hackerbox kit #24](https://hackerboxes.com/collections/frontpage/products/hackerbox-0024-vision-quest) with a few added parts where needed for additional functionality.
 
 ## Video walkthrough of the hardware build
 [![Cambot Video](https://img.youtube.com/vi/nbJNLVBo_g4/0.jpg)](https://www.youtube.com/watch?v=nbJNLVBo_g4)
@@ -42,10 +42,14 @@ The arduino code is pretty straightforward. There is a set of commands to contro
 
 The C# code is currently using a wrapper around the amazing [Open CV library](https://opencv.org/) for movement detection from the webcam feed. You can find this library [Here](http://www.emgu.com/wiki/index.php/Main_Page) ( although you should just install the package via the Nuget Package Manager in Visual Studio. ) At the moment I am just hacking up the movement detection example to suite my needs, but eventually I will start my own, more organized, app.
 
+## Future improvements
 I would love for the CamBot to have some personality, it would look for faces and follow them. When it see's people it 'likes' it would light up with a happy color and beep in delight. Something that just sits on the desk and looks adorable. Maybe it would unlock your computer for you, or do other more useful things. Some kind of google home type integration?!
 
+I would also love to rebuild it to be much smaller, use a raspberry pi for the controller, and maybe have a higher resolution webcam?
+
 ## Before you try to run the C# code!
-You will have to be able to run .net 4 code with Visual Studio ( Community Edition is fine, ) and you will also have to install the EMGU libs via the Nuget Package Manager. **Disclaimer. This is hacked together code at the moment, jammed sideways into an example from EMGU.**
+
+You will have to be able to run .net 4 code with [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/} ( Community Edition is fine, ) and you will also have to install the EMGU libs via the Nuget Package Manager.
 
 ## Some things to consider ##
 
