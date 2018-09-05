@@ -49,7 +49,7 @@ I would also love to rebuild it to be much smaller, use a raspberry pi for the c
 
 ## Before you try to run the C# code!
 
-You will have to be able to run .net 4 code with [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/} ( Community Edition is fine, ) and you will also have to install the EMGU libs via the Nuget Package Manager.
+You will have to be able to run .net 4 code with [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/) ( Community Edition is fine, ) and you will also have to install the EMGU libs via the Nuget Package Manager.
 
 ## Some things to consider ##
 
