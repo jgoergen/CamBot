@@ -53,6 +53,8 @@ You will have to be able to run .net 4 code with [Visual Studio 2017](https://vi
 
 ## Some things to consider ##
 
+If you use this on a computer that already has a webcam, you will have to disable that webcam so this doesn't pick that up instead. You could add code to find your bot webcam, specifically, but I decided not to add that as it's too specific to one user.
+
 Movement detection is VERY sensitive to alot of things. Take care to minimize the amount of noise in your video feed. For example; dark rooms will be a problem if your camera doesn't use infrared. Cheaper cameras will have alot more noise in general. Your robot will need to be seated on a totally still surface. ANY unplanned movement will 'unsettle' your motion detection ( it will think EVERYTHING is moving until it has time to settle again. ) 
 
 If you open the Desktop app solution file and open VideoSurveilance.cs you will see some settings towards the top of the file that you can play with to fine tune things alittle. 
