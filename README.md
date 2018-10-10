@@ -60,5 +60,5 @@ Movement detection is VERY sensitive to alot of things. Take care to minimize th
 If you open the Desktop app solution file and open VideoSurveilance.cs you will see some settings towards the top of the file that you can play with to fine tune things alittle. 
 
 # Good luck and have fun! 
-## Please feel free to fork this, or contribute to it! 
+## Please feel free to fork or contribute! 
 ## Also please submit issues if you have any problems or questions and I'll do my best to help get things worked out!
